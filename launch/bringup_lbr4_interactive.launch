@@ -31,7 +31,7 @@
 	<!-- obstacle tf publisher-->
 	<node pkg="tf" type="static_transform_publisher" name="obstacle_tf_publisher" args="$(arg obstacle_x) $(arg obstacle_y) $(arg obstacle_z) 0 0 0 1 /base_link obstacle_1 200" />
 	
-	
+	<!--
 	<node pkg="tf" type="static_transform_publisher" name="target_tf_publisher" args="0.3 0.2 0.6 0 0 0 1 /base_link target 200" />-->
 	<!--
 	<node name="tf_obstacle_broadcaster" pkg="tf_obstacle_broadcaster" type="tf_obstacle_broadcaster.py">

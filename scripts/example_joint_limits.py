@@ -7,18 +7,20 @@ import tf
 ## piTaSC ##
 from pitasc_core.robots.robot_lbr4 import Robot_LBR4
 from pitasc_core.robots.robot_ur5 import Robot_UR5
+from pitasc_core.robots.robot_iiwa7 import Robot_IIWA7
 
 from pitasc_core.chains.chain_simple_pose import Chain_SimplePose
 
 from pitasc_core.kinematic_loop import KinematicLoop
 
-from pitasc_core.solvers.solver_fmin_slsqp_pose import Solver_Joint_Limits
-from pitasc_core.solvers.solver_fmin_slsqp_pose_obstacle import Solver_FMIN_SLSQP
+#from pitasc_core.solvers.solver_fmin_slsqp_pose import Solver_Joint_Limits
+from pitasc_core.solvers.solver_fmin_slsqp import Solver_FMIN_SLSQP
 #from pitasc_core.solvers.solver_pyopt import Solver_PYOPT
-from pitasc_core.solvers.solver_cvxgen2 import Solver_CVXGEN2
+#from pitasc_core.solvers.solver_cvxgen2 import Solver_CVXGEN2
 from pitasc_core.solvers.solver_prioritized import Solver_Prioritized
-from pitasc_core.solvers.solver_qpoases2 import Solver_OPOASES2
-from pitasc_core.solvers.solver_qpoases import Solver_Qpoases
+#f#rom pitasc_core.solvers.solver_qpoases2 import Solver_OPOASES2
+#from pitasc_core.solvers.solver_qpoases import Solver_Qpoases
+from pitasc_core.solvers.solver_joint_middle import Solver_Jointmiddle
 
 from pitasc_core.controllers.controller_simple import Controller_P
 
@@ -69,11 +71,12 @@ def run():
 	##---------Solver ##
 	#solver = Solver_Prioritized()
 	#solver = Solver_Joint_Limits()
-	solver = Solver_FMIN_SLSQP()
+	#solver = Solver_FMIN_SLSQP()
 	#solver = Solver_Qpoases()
 	#solver = Solver_OPOASES2()
 	#solver = Solver_CVXGEN2()
 	#solver = Solver_PYOPT()
+	solver = Solver_Jointmiddle()
 
 	#########################################################################################
 	##---------Scene ##
@@ -93,7 +96,7 @@ def run():
 
 	scene.build_symbols()
 	scene.set_tasks(task)
-	
+
 	#solver.build_qp(scene)
 	robot.robot_drivers[0].set_observer(scene.update)
 
