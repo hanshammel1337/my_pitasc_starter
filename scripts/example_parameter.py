@@ -120,31 +120,31 @@ def run():
 	b1 = lambda x: np.array( (scene.measurements['joint_1'] + x[0]) - scene.links[0].limit_min )
 	b2 = lambda x: np.array( scene.links[0].limit_max - (scene.measurements['joint_1'] + x[0]) )
 
-	b2 = lambda x: np.array( (scene.measurements['joint_2'] + x[1]) - scene.links[1].limit_min )
-	b3 = lambda x: np.array( scene.links[1].limit_max - (scene.measurements['joint_2'] + x[1]) )
+	b3 = lambda x: np.array( (scene.measurements['joint_2'] + x[1]) - scene.links[1].limit_min )
+	b4 = lambda x: np.array( scene.links[1].limit_max - (scene.measurements['joint_2'] + x[1]) )
 
-	b4 = lambda x: np.array( (scene.measurements['joint_3'] + x[2]) - scene.links[2].limit_min )
-	b5 = lambda x: np.array( scene.links[2].limit_max - (scene.measurements['joint_3'] + x[2]) )
+	b5 = lambda x: np.array( (scene.measurements['joint_3'] + x[2]) - scene.links[2].limit_min )
+	b6 = lambda x: np.array( scene.links[2].limit_max - (scene.measurements['joint_3'] + x[2]) )
 
-	b6 = lambda x: np.array( (scene.measurements['joint_4'] + x[3]) - scene.links[3].limit_min )
-	b7 = lambda x: np.array( scene.links[3].limit_max - (scene.measurements['joint_4'] + x[3]) )
+	b7 = lambda x: np.array( (scene.measurements['joint_4'] + x[3]) - scene.links[3].limit_min )
+	b8 = lambda x: np.array( scene.links[3].limit_max - (scene.measurements['joint_4'] + x[3]) )
 
-	b8 = lambda x: np.array( (scene.measurements['joint_5'] + x[4]) - scene.links[4].limit_min )
-	b9 = lambda x: np.array( scene.links[4].limit_max - (scene.measurements['joint_5'] + x[4]) )
+	b9 = lambda x: np.array( (scene.measurements['joint_5'] + x[4]) - scene.links[4].limit_min )
+	b10 = lambda x: np.array( scene.links[4].limit_max - (scene.measurements['joint_5'] + x[4]) )
 
-	b10 = lambda x: np.array( (scene.measurements['joint_6'] + x[5]) - scene.links[5].limit_min )
-	b11 = lambda x: np.array( scene.links[5].limit_max - (scene.measurements['joint_6'] + x[5]) )
+	b11 = lambda x: np.array( (scene.measurements['joint_6'] + x[5]) - scene.links[5].limit_min )
+	b12 = lambda x: np.array( scene.links[5].limit_max - (scene.measurements['joint_6'] + x[5]) )
 
-	b12 = lambda x: np.array( (scene.measurements['joint_7'] + x[6]) - scene.links[6].limit_min )
-	b13 = lambda x: np.array( scene.links[6].limit_max - (scene.measurements['joint_7'] + x[6]) )
+	b13 = lambda x: np.array( (scene.measurements['joint_7'] + x[6]) - scene.links[6].limit_min )
+	b14 = lambda x: np.array( scene.links[6].limit_max - (scene.measurements['joint_7'] + x[6]) )
 	
 
 	## example 2: keep end effector z value between 0.1 and 0.5 ##
-	b14 = lambda x: direct_kinematic(x)[2] - 0.1
-	b15 = lambda x: 0.5 - direct_kinematic(x)[2]
+	b15 = lambda x: direct_kinematic(x)[2] - 0.1
+	b16 = lambda x: 0.5 - direct_kinematic(x)[2]
 
 	## example 3: keep distance end effector to obstacle greater than 0.1 ##
-	def b16(x):
+	def b17(x):
 		ee_x, ee_y, ee_z = direct_kinematic(x)
 		distance_x = 0.4 - ee_x
 		distance_y = -0.2 - ee_y

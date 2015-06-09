@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+
+<launch>
+    <!--param name="robot_description" command="$(find xacro)/xacro.py '$(find comau_model)/robot/comau_rml.urdf.xacro'" /--> 
+    <param name="robot_description" command="$(find xacro)/xacro.py '$(find ipa325_robot_descriptions)/urdf/comau/comau_rml.urdf.xacro'" />   
+
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" >
+        <!--remap from="joint_states" to="comau_joint_states" /-->
+    </node>
+    
+    <!-- marker -->
+    <node name="interactive_pose_publisher" pkg="interactive_pose_publisher" type="interactive_pose_publisher_node">
+        <param name="interactive_pose_topic" value="itasc_set_pose"/>
+        <param name="interactive_pose_parent" value="/world"/>
+        <param name="interactive_pose_child" value="/marker1"/>
+        <param name="initial_pose/position/x" value="2.26"/>
+        <param name="initial_pose/position/y" value="0.6"/>
+        <param name="initial_pose/position/z" value="1.0"/>
+        <param name="initial_pose/orientation/x" value="1.0"/>
+        <param name="initial_pose/orientation/y" value="0.0"/>
+        <param name="initial_pose/orientation/z" value="0.0"/>
+        <param name="initial_pose/orientation/w" value="0.0"/>
+    </node>
+
+    <!-- marker2 -->
+    <node name="interactive_pose_publisher2" pkg="interactive_pose_publisher" type="interactive_pose_publisher_node">
+        <param name="interactive_pose_topic" value="itasc_set_pose"/>
+        <param name="interactive_pose_parent" value="/world"/>
+        <param name="interactive_pose_child" value="/marker2"/>
+        <param name="initial_pose/position/x" value="2.4"/>
+        <param name="initial_pose/position/y" value="-0.8"/>
+        <param name="initial_pose/position/z" value="1.0"/>
+        <param name="initial_pose/orientation/x" value="1.0"/>
+        <param name="initial_pose/orientation/y" value="0.0"/>
+        <param name="initial_pose/orientation/z" value="0.0"/>
+        <param name="initial_pose/orientation/w" value="0.0"/>
+    </node>
+
+
+
+    <!-- rviz -->
+    <node pkg="rviz" type="rviz" name="rviz" />
+
+    <!-- smach introspection -->
+<!--     <node pkg="smach_viewer" type="smach_viewer.py" name="smach_viewer"/> -->
+</launch>

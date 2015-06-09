@@ -18,7 +18,7 @@ import smach_ros
 
 ## npitask ##
 ##
-from pitasc_core.scene_simple import Scene_Simple
+from pitasc_smach.scene_smach import Scene_Smach
 from pitasc_smach.state import State
 
 from pitasc_core.robots.robot_rml import Robot_RML
@@ -32,6 +32,27 @@ from pitasc_core.solvers.solver_fmin_slsqp_comau import Solver_FMIN_SLSQP
 from pitasc_core.controllers.controller_simple import Controller_P
 
 from pitasc_core.task import Task
+
+
+## STATES ##
+##
+class State_MoveTo(State):
+    def __init__(self, state_id):
+        State.__init__(self, state_id, None, scene,
+            outcomes = ['done', 'preempted'],
+        )
+
+    def on_start(self, userdata):
+
+        ## Task: Move to pose ##
+        ##
+        self.tasks = []
+
+        #self.tasks.append(Task(eef_to_marker1.chains[0].symbols[0:6], [0,0,0,0,0,0], []))
+        #self.tasks.append(Task(eef_to_marker2.chains[0].symbols[0:6], [0,0,0,0,0,0], []))
+
+        self.tasks.append(Task(eef_to_marker1.chains[0].symbols[0:6] + eef_to_marker2.chains[0].symbols[0:6], [0,0,0,0,0,0]+[0,0,0,0,0,0], []))
+        #self.tasks.append(Task(rob1_to_rob2.chains[0].symbols[0:6], [0,0,0,0,0,0], []))
 
 
 ## ROS node ##
@@ -52,8 +73,8 @@ def run():
 
     chains = {}
     
-    eef_to_marker1 = Chain_SimplePose('eef_to_marker1', 'x1', 'feature', 'moving_tf', 'right_link_ee')
-    base_to_marker1 = Chain_SimplePose('base_to_marker1', 'o1', 'object', 'rml_right_base', 'moving_tf')
+    eef_to_marker1 = Chain_SimplePose('eef_to_marker1', 'x1', 'feature', 'marker1', 'right_link_ee')
+    base_to_marker1 = Chain_SimplePose('base_to_marker1', 'o1', 'object', 'comau_rml_base', 'marker1')
 
     eef_to_marker2 = Chain_SimplePose('eef_to_marker2', 'x2', 'feature', 'marker2', 'left_link_ee')
     base_to_marker2 = Chain_SimplePose('base_to_marker2', 'o2', 'object', 'comau_rml_base', 'marker2')
@@ -68,12 +89,8 @@ def run():
     
     loops = {}
 
-    '''loops['viaRightArm'] = KinematicLoop('viaRightArm',
+    loops['viaRightArm'] = KinematicLoop('viaRightArm',
         robot_chains=[robot.chains[0], robot.chains[1]],
-        feature_chains=[base_to_marker1.chains[0], eef_to_marker1.chains[0]]
-    )'''
-    loops['ohnemitte'] = KinematicLoop('ohnemitte',
-        robot_chains=[robot.chains[1]],
         feature_chains=[base_to_marker1.chains[0], eef_to_marker1.chains[0]]
     )
 
@@ -87,14 +104,6 @@ def run():
         feature_chains=[rob1_to_rob2.chains[0].get_inverse_chain()]
     )
     
-    ## Task: Move to pose ##
-    ##
-    tasks = []
-    tasks.append(Task(eef_to_marker1.chains[0].symbols[0:6], [0,0,0,0,0,0], []))
-    #tasks.append(Task(eef_to_marker2.chains[0].symbols[0:6], [0,0,0,0,0,0], []))
-    tasks.append(Task(robot.chains[0].symbols[0:1],[0.0],[]))
-    #tasks.append(Task(eef_to_marker1.chains[0].symbols[0:6] + eef_to_marker2.chains[0].symbols[0:6], [0,0,0,0,0,0]+[0,0,0,0,0,0], []))
-    
 
     ## Controllers ##
     ##
@@ -106,14 +115,11 @@ def run():
     #solver = Solver_Prioritized()
     solver = Solver_FMIN_SLSQP()
     
-    ## example 1: keep all joints between their limit_min and limit_max ##
-    b1 = lambda x: np.array( (scene.measurements['right_joint_3'] + x[0]) - (-3.00) )
-    b2 = lambda x: np.array( 0.24 - (scene.measurements['right_joint_3'] + x[0]) )
     
     ## Scene ##
     ##
     print 'Setting up the scene'
-    scene = Scene_Simple()
+    scene = Scene_Smach()
     
     scene.default_controller = p_controller
     scene.solver = solver
@@ -130,13 +136,37 @@ def run():
     scene.add_chains(robot.chains + rob1_to_rob2.chains + eef_to_marker1.chains + base_to_marker1.chains + eef_to_marker2.chains + base_to_marker2.chains)
 
     scene.add_loops(loops)
-
-    scene.build_symbols()
-    scene.set_tasks(tasks)
-    solver.add_inequality([b1,b2])
     
     robot.robot_drivers[0].set_observer(scene.update)
 
+
+    ## SMACH state machine ##
+    ##
+    sm = smach.StateMachine(outcomes=['succeeded','aborted','preempted'])
+
+    with sm:
+        ## Add states to the container ##
+        ##
+        smach.StateMachine.add('State_MoveTo', State_MoveTo('State_MoveTo'),
+           transitions={'done':'succeeded', 'preempted':'preempted'})
+
+
+    sis = smach_ros.IntrospectionServer('server_name', sm, '/SM_ROOT')
+    sis.start()
+
+
+    ## Start ##
+    ##
+    print 'Starting the loop'
+    outcome = sm.execute()
+    rospy.spin()
+    sis.stop()
+
+
+    ## Quit ##
+    ##
+    print "Quitting"
+    rospy.signal_shutdown("Ctrl+C")
     rospy.spin() # Start spinning again to quit statemachine
 
 

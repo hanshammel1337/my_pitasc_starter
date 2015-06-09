@@ -187,11 +187,35 @@ Visualization Manager:
           Value: true
         comau_rml_fix_2:
           Value: true
+        left_link_1:
+          Value: true
+        left_link_2:
+          Value: true
+        left_link_3:
+          Value: true
+        left_link_4:
+          Value: true
+        left_link_5:
+          Value: true
         left_link_6:
           Value: true
         left_link_ee:
           Value: true
-        marker:
+        marker1:
+          Value: true
+        marker2:
+          Value: true
+        moving_tf:
+          Value: true
+        right_link_1:
+          Value: true
+        right_link_2:
+          Value: true
+        right_link_3:
+          Value: true
+        right_link_4:
+          Value: true
+        right_link_5:
           Value: true
         right_link_6:
           Value: true
@@ -219,9 +243,31 @@ Visualization Manager:
               comau_rml_fix_1:
                 comau_rml_fix_2:
                   rml_comau_base_0:
-                    {}
-              marker:
-                {}
+                    rml_comau_base:
+                      rml_left_base:
+                        left_link_1:
+                          left_link_2:
+                            left_link_3:
+                              left_link_4:
+                                left_link_5:
+                                  left_link_6:
+                                    left_link_ee:
+                                      {}
+                      rml_right_base:
+                        right_link_1:
+                          right_link_2:
+                            right_link_3:
+                              right_link_4:
+                                right_link_5:
+                                  right_link_6:
+                                    right_link_ee:
+                                      {}
+          marker1:
+            {}
+          marker2:
+            {}
+          moving_tf:
+            {}
       Update Interval: 0
       Value: true
     - Class: rviz/InteractiveMarkers
@@ -232,6 +278,15 @@ Visualization Manager:
       Show Descriptions: true
       Show Visual Aids: false
       Update Topic: /interactive_marker_server/update
+      Value: true
+    - Class: rviz/Marker
+      Enabled: true
+      Marker Topic: visualization_marker
+      Name: Marker
+      Namespaces:
+        /left_link_ee: true
+        moving_tf: true
+      Queue Size: 100
       Value: true
   Enabled: true
   Global Options:
@@ -257,22 +312,22 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/XYOrbit
-      Distance: 5.26547
+      Distance: 4.39626
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.06
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.102992
-        Y: -0.0154526
-        Z: 0
+        X: 1.21765
+        Y: 0.255954
+        Z: -4.76837e-07
       Name: Current View
       Near Clip Distance: 0.01
-      Pitch: 0.395399
+      Pitch: 0.615399
       Target Frame: <Fixed Frame>
       Value: XYOrbit (rviz)
-      Yaw: 0.71541
+      Yaw: 0.200419
     Saved: ~
 Window Geometry:
   Displays:
@@ -291,4 +346,4 @@ Window Geometry:
     collapsed: false
   Width: 1215
   X: 1985
-  Y: 24
+  Y: 80

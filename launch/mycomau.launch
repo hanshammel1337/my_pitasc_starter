@@ -18,6 +18,10 @@
 		<param name="initial_pose/position/x" value="2.0"/>
 		<param name="initial_pose/position/y" value="0.5"/>
 		<param name="initial_pose/position/z" value="0.6"/>
+        <param name="initial_pose/orientation/x" value="1.0"/>
+        <param name="initial_pose/orientation/y" value="0.0"/>
+        <param name="initial_pose/orientation/z" value="0.0"/>
+        <param name="initial_pose/orientation/w" value="0.0"/>
 	</node>
 
 	<!-- interactive marker -->
@@ -28,6 +32,10 @@
 		<param name="initial_pose/position/x" value="2.0"/>
 		<param name="initial_pose/position/y" value="-0.5"/>
 		<param name="initial_pose/position/z" value="0.6"/>
+        <param name="initial_pose/orientation/x" value="1.0"/>
+        <param name="initial_pose/orientation/y" value="0.0"/>
+        <param name="initial_pose/orientation/z" value="0.0"/>
+        <param name="initial_pose/orientation/w" value="0.0"/>
 	</node>
 
 	
@@ -45,5 +53,37 @@
 		<param name="max_length" value="50"/>
 		<param name="rate" value="10"/>
 		<param name="id" value="1"/>
+	</node>
+
+	<node pkg="ipa325_tf_utils" type="moving_tf_frame.py" name="moving_tf" output="screen">
+		<param name="tf_parent" 	value="world" 		type="str"/>
+		<param name="tf_child" 		value="moving_tf" 	type="str"/>
+
+		<!-- choose either: line, circle or spiral-->
+		<param name="movement_type"	value="circle" 		type="str"/>
+
+		<param name="move_frame_roll" 	value="0" 		type="double" />
+		<param name="move_frame_pitch" 	value="3.14159265" 	type="double" />
+		<param name="move_frame_yaw" 	value="0" 		type="double" />
+
+		<!-- circle parameters -->
+		<param name="x_center_c" 	value="2.5" 	type="double" />
+		<param name="y_center_c" 	value="0.63"	type="double" />
+		<param name="z_center_c" 	value="1.26" 	type="double" />
+		<param name="radius" 		value="0.5" 	type="double" />
+
+		<!-- time parameters -->
+		<param name="time_steps_hz" value="100" 	type="double" />
+		<param name="speed"			value="0.4" 	type="double" />
+		<param name="stop_time" 	value="0" 		type="double" />
+
+		<!-- trace parameters -->
+		<param name="show_path" 	value="True" 	type="bool" />
+		<param name="trace_scale"	value="0.003" 	type="double" />
+
+		<param name="trace_color_r" value="0" 		type="double" />
+		<param name="trace_color_g" value="0" 		type="double" />
+		<param name="trace_color_b" value="1" 	type="double" />
+		<param name="trace_color_a" value="1" 		type="double" />
 	</node>
 </launch>
